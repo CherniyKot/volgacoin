@@ -3,6 +3,7 @@ package ru.bcs.volgacoin.config
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.cglib.core.Customizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
 
 
@@ -23,25 +25,9 @@ class SecurityConfiguration {
             .authorizeHttpRequests { auths ->
                 auths.anyRequest().authenticated()
             }
-            .addFilter(object : AbstractAuthenticationProcessingFilter(RequestMatcher { true }) {
-                override fun attemptAuthentication(
-                    request: HttpServletRequest?,
-                    response: HttpServletResponse?
-                ): Authentication {
-                    TODO("Not yet implemented")
-                }
-
-                override fun successfulAuthentication(
-                    request: HttpServletRequest?,
-                    response: HttpServletResponse?,
-                    chain: FilterChain?,
-                    authResult: Authentication?
-                ) {
-                    super.successfulAuthentication(request, response, chain, authResult)
-                    TODO("Not yet implemented")
-                }
-            })
-            .authenticationProvider(TODO("Not yet implemented"))
+            .addFilterBefore(TelegramAuthenticationProcessingFilter(), BasicAuthenticationFilter::class.java)
+            .authenticationProvider(CustomAuthenticationProvider())
+            .httpBasic(org.springframework.security.config.Customizer.withDefaults())
         return http.build()
     }
 }
