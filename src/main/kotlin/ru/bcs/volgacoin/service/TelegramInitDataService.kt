@@ -4,6 +4,7 @@ import org.apache.commons.codec.digest.HmacAlgorithms
 import org.apache.commons.codec.digest.HmacUtils
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 
 @Service
@@ -30,4 +31,8 @@ class TelegramInitDataService(
     }
 
     fun isValid(data: String) = isValid(TelegramInitData.from(data))
+
+    fun isFresh(data: TelegramInitData): Boolean {
+        return data.data["auth_date"]?.let { LocalDateTime.parse(it) > (LocalDateTime.now().minusSeconds(1)) } ?: false
+    }
 }
