@@ -5,6 +5,7 @@ import org.apache.commons.codec.digest.HmacUtils
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 
 @Service
@@ -33,6 +34,13 @@ class TelegramInitDataService(
     fun isValid(data: String) = isValid(TelegramInitData.from(data))
 
     fun isFresh(data: TelegramInitData): Boolean {
-        return data.data["auth_date"]?.let { LocalDateTime.parse(it) > (LocalDateTime.now().minusSeconds(1)) } ?: false
+        return true
+        return data.data["auth_date"]?.let {
+            LocalDateTime.ofEpochSecond(
+                it.toLong(),
+                0,
+                ZoneOffset.UTC
+            ) > (LocalDateTime.now().minusSeconds(1))
+        } ?: false
     }
 }

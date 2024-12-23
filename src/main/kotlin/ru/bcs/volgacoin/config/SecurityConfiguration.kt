@@ -14,7 +14,11 @@ import ru.bcs.volgacoin.service.TelegramInitDataService
 @EnableWebSecurity
 class SecurityConfiguration {
     @Bean
-    fun filterChain(http: HttpSecurity, authenticationManager: AuthenticationManager, telegramInitDataService: TelegramInitDataService): SecurityFilterChain {
+    fun filterChain(
+        http: HttpSecurity,
+        authenticationManager: AuthenticationManager,
+        telegramInitDataService: TelegramInitDataService
+    ): SecurityFilterChain {
         http
             .authorizeHttpRequests { auths ->
                 auths.requestMatchers("/api/**").authenticated()
@@ -23,6 +27,9 @@ class SecurityConfiguration {
             .addFilter(
                 TelegramAuthenticationProcessingFilter(authenticationManager, telegramInitDataService)
             )
+            .csrf {
+                it.disable()
+            }
         return http.build()
     }
 

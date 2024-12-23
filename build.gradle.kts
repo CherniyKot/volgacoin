@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ru.bcs"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.4-SNAPSHOT"
 
 java {
 	toolchain {
@@ -35,6 +35,8 @@ dependencies {
 
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	testImplementation("com.opentable.components:otj-pg-embedded:0.13.1")
 }
 
 kotlin {

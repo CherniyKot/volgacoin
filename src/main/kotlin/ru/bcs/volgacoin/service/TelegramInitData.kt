@@ -1,5 +1,7 @@
 package ru.bcs.volgacoin.service
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -20,12 +22,13 @@ data class TelegramInitData(
     }
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class UserData(
-    val allows_write_to_pm: Boolean,
-    val first_name: String,
-    val id: Long,
-    val is_premium: Boolean,
-    val language_code: String,
-    val last_name: String,
-    val username: String
+    @JsonProperty("allows_write_to_pm") val allowsWriteToPm: Boolean,
+    @JsonProperty("first_name") val firstName: String,
+    @JsonProperty("id") val id: Long,
+    @JsonProperty("is_premium") val isPremium: Boolean,
+    @JsonProperty("language_code") val languageCode: String,
+    @JsonProperty("last_name") val lastName: String,
+    @JsonProperty("username") val username: String
 )
