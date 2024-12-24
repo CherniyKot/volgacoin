@@ -39,4 +39,4 @@ out/
 ### Kotlin ###
 .kotlin
 
-*.prod.properties
+/src/main/resources/static

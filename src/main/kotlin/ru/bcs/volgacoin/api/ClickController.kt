@@ -46,7 +46,7 @@ class ClickControllerImpl(
             last_login = now
         )
         userDataRepository.upsert(newUserData)
-        return newUserData.let { ClickResponseDto(it.clicks, it.energy.toLong()) }
+        return newUserData.let { ClickResponseDto(it.clicks, it.energy.toLong(), maxEnergy) }
     }
 
     private fun getOrCreateUser(forUpdate: Boolean = false): UserDataEntity {
